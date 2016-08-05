@@ -111,7 +111,7 @@ This is why the ```docker-maven-plugin``` looks for the Dockerfile in ```target/
 ```
 Building and launching
 ------------------------
-Now, all that is left to do is to actually do it:
+Now, all that is left to do is to actually execute it:
 
     $ git clone  https://github.com/alexturcot/sample-docker-from-maven.git
     $ cd sample-docker-from-maven
