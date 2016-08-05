@@ -1,7 +1,8 @@
-docker-maven-plugin - Docker image from maven
+Docker image from maven: docker-maven-plugin
 ---------------------------------------------------
 
-**I personally don't think this would be considered good practice, but I wanted to try out building a Docker image straight out of maven.**
+**I wanted to try out building a Docker image straight out of maven, even though I personally don't think this would be a good practice**.
+I believe the better approach is to seperate both concern, and have a docker image built upon commit in a repository (or something along these lines).
 
 The plugins I found:
 * https://github.com/spotify/docker-maven-plugin
@@ -54,7 +55,7 @@ Here's how I configured the plugin:
 </plugin>
 ```
 
-* **execution>phase>package**: the plugin is bound to the package phase, so the Docker is actually created every time an ```mvn install``` is performed.
+* **execution>phase>package**: the plugin is bound to the package phase, so the Docker image is created every time an ```mvn install``` is performed.
 This may not be the best solution, but it is simply the easiest for my purposes.
 * **imageName**: the image name is the artifactId;
 * **dockerDirectory**: the plugin looks for a Dockerfile in target/docker (see maven-resources-plugin below)
@@ -119,20 +120,20 @@ Now, all that is left to do is to actually do it:
 [INFO] Scanning for projects...
 [INFO]                                                                         
 [INFO] ------------------------------------------------------------------------
-[INFO] Building sample-spring-boot-docker 1.0.0-SNAPSHOT
+[INFO] Building sample-docker-from-maven 1.0.0-SNAPSHOT
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ sample-spring-boot-docker ---
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ sample-docker-from-maven ---
 [INFO] Deleting /Users/alexbt/IdeaProjects/sample-docker-from-maven/target
 [INFO] 
-[INFO] --- maven-resources-plugin:3.0.1:resources (default-resources) @ sample-spring-boot-docker ---
+[INFO] --- maven-resources-plugin:3.0.1:resources (default-resources) @ sample-docker-from-maven ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] Copying 1 resource
 ...
-[INFO] Copying /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/sample-spring-boot-docker-1.0.0-SNAPSHOT.jar -> /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-spring-boot-docker-1.0.0-SNAPSHOT.jar
+[INFO] Copying /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/sample-docker-from-maven-1.0.0-SNAPSHOT.jar -> /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-docker-from-maven-1.0.0-SNAPSHOT.jar
 [INFO] Copying /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/Dockerfile -> /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/Dockerfile
-[INFO] Copying /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-spring-boot-docker-1.0.0-SNAPSHOT.jar -> /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-spring-boot-docker-1.0.0-SNAPSHOT.jar
-[INFO] Building image sample-spring-boot-docker
+[INFO] Copying /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-docker-from-maven-1.0.0-SNAPSHOT.jar -> /Users/alexbt/IdeaProjects/sample-docker-from-maven/target/docker/sample-docker-from-maven-1.0.0-SNAPSHOT.jar
+[INFO] Building image sample-docker-from-maven
 Step 1 : FROM frolvlad/alpine-oraclejdk8:slim
 Pulling from frolvlad/alpine-oraclejdk8
 e110a4a17941: Downloading [==================================>                ] 
@@ -151,12 +152,12 @@ You'll see the image in docker if you type :
    
 ```
 REPOSITORY                        TAG                 IMAGE ID            CREATED             SIZE
-sample-spring-boot-docker         1.0.0-SNAPSHOT      c9e136ec0738        5 minutes ago       201.8 MB
+sample-docker-from-maven         1.0.0-SNAPSHOT      c9e136ec0738        5 minutes ago       201.8 MB
 ```
 
 Then, you can launch the container:
 
-    $ docker run -e spring_profiles_active=dev -p 8080:8080 -i -t sample-spring-boot-docker:1.0.0-SNAPSHOT
+    $ docker run -e spring_profiles_active=dev -p 8080:8080 -i -t sample-docker-from-maven:1.0.0-SNAPSHOT
     
 In my case, the entrypoint of my image is a spring boot application.
 * **-e spring_profiles_active=dev**  is to provide set a spring profile
