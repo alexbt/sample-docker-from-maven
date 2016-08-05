@@ -2,9 +2,9 @@ Docker image from maven: docker-maven-plugin
 ---------------------------------------------------
 
 **I wanted to try out building a Docker image straight out of maven, even though I personally don't think this would be a good practice**.
-I believe the better approach is to seperate both concern, and have a docker image built upon commit in a repository (or something along these lines).
+I believe the better approach is to seperate both concerns and have a docker image built upon commit in a repository (or something along these lines, with dockerhub or codeship).
 
-The plugins I found:
+Back to building a docker image with a maven plugin, here's the plugins I found:
 * https://github.com/spotify/docker-maven-plugin
 * https://github.com/fabric8io/docker-maven-plugin
 * https://github.com/wouterd/docker-maven-plugin
@@ -79,9 +79,9 @@ ENTRYPOINT ["java","-jar","/${artifactId}-${version}.jar"]
 
 As you can see, instead of harcoding the values in the Dockerfile, I used maven properties.
 For this to work, I then need to use maven's ```filtering``` feature. In a perfect world, the ```docker-maven-plugin``` would support filtering. 
-Perhaps it does and I could find a way to make work, I didn't want to lose any sleep on that: [spotify's open issue on this](https://github.com/spotify/docker-maven-plugin/issues/25)
+Perhaps it works with the other docker-maven-plugins, I didn't want to lose any sleep on that: [spotify's open issue on this](https://github.com/spotify/docker-maven-plugin/issues/25)
 
-so I simply used ```maven-resources-plugin``` to copy the Dockerfile into the target directory, while applying filtering.
+So I simply used ```maven-resources-plugin``` to copy the Dockerfile into the target directory, while applying filtering.
 This is why the ```docker-maven-plugin``` looks for the Dockerfile in ```target/docker``` instead of ```src/main/docker``` :
 ```
 <plugin>
