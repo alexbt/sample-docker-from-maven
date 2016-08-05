@@ -160,7 +160,7 @@ Then, you can launch the container:
     $ docker run -e spring_profiles_active=dev -p 8080:8080 -i -t sample-docker-from-maven:1.0.0-SNAPSHOT
     
 In my case, the entrypoint of my image is a spring boot application.
-* **-e spring_profiles_active=dev**  is to provide set a spring profile
+* **-e spring_profiles_active=dev**  is to provide set a spring profile through an environment variable;
 * **-p 8080:8080** is to open port on the docker container, so that I can reach it from my computer.
 
 You can browse to http://localhost:8080/docker, to access the dockerized application. That's it.
